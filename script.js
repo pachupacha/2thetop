@@ -5,6 +5,8 @@ let nothing = null; /*Null*/
 let notDefined; /*Undefined*/
 const dni = 40246931; /*Constant*/
 
+//1.Concepto de "Scope" ó "Ámbito de Bloque"
+
 let pachu = "Fernandito";
 if (true) {
   let pachu = "Fernandito";
@@ -12,6 +14,9 @@ if (true) {
   console.log(pachu);
 }
 console.log(pachu);
+//___________________________________________
+
+//2.Método de Consola .table sobre una array
 
 const theWeekndSongs = [
   { title: "Blinding Lights", album: "After Hours", year: 2020 },
@@ -29,12 +34,15 @@ console.table(theWeekndSongs);
 console.log(console);
 console.log(window.document);
 
+//3. Discriminar carácteres en una string:
+
 const intro1 = "pepito pepón";
 const intro2 = new String("pepita pepón");
 console.log(intro1[0]);
 console.log(intro2);
 
-// Cadenas de texto aka Strings
+// Cadenas de texto a.k.a. "strings":
+
 let nombre = "Juan Domingo";
 let apellido = "Perón";
 let saludo = new String("Hi! my name is Juan Domingo");
@@ -113,14 +121,9 @@ if (-Infinity);
 
 //Falsy
 if (false)
-if (null)
-if (undefined)
-if (0) 
-if (NaN) 
-if (``) 
-if ("") 
-if ("") 
-if (document.all) [1];
+  if (null)
+    if (undefined)
+      if (0) if (NaN) if (``) if ("") if ("") if (document.all) [1];
 
 //undefined, Null y NaN
 
@@ -158,8 +161,8 @@ let valorDeFuncion = unaFuncionQueDevuelveValor();
 
 console.log(valorDeFuncion);
 
+//Placeholder//
 function saludar(nombre = "Desconocido", edad = 0) {
-  //Placeholder//
   console.log(`Hola mi nombre es ${nombre} y tengo ${edad} años.`);
 }
 
@@ -187,17 +190,18 @@ const funcionExpresada = function () {
 
 funcionExpresada();
 
-console.clear()
+//Pequeño adelanto a arrowFunction =>
+//1.Sintanxis más simple
+//2.return sobre la misma linea de código implicito en la función
+//3.se saltea el contexto actual y actua sobre el contexto "padre".
 
 const funcionFlecha = () => {
-    
-    console.log("Esta es la función Flecha")
-    
-}
+  console.log("Esta es la función Flecha");
+};
 
-funcionFlecha()
+funcionFlecha();
 
-// THIS----------------------------------------------------//
+//Contexto dinámico this//
 
 this.mundo = "Mundo 1 ";
 
@@ -217,3 +221,77 @@ const objetoConFuncionFlecha = {
   },
 };
 objetoConFuncionFlecha.imprimir();
+
+//Adelanto de call, apply & bind
+
+const user = {
+  name: "Marcos",
+};
+
+const business = {
+  name: "Headbook",
+};
+
+function showInfo(likes, friends) {
+  return `${this.name} tiene ${likes} y ${friends}`;
+}
+
+//call refiere al objeto que se determine dentro de los parámetros
+
+console.log(showInfo.call(business, 4, 8));
+
+//apply es similar, pero los parámetros deben estar dentro de una array
+
+console.log(showInfo.apply(user, [6, 9]));
+
+//bind esta regresa una función después de haber asociado el contexto en particular.
+
+const newFunction = showInfo.bind(user);
+
+console.log(newFunction(10, 15));
+
+//Arrays
+console.clear();
+
+const e = [];
+const g = [1, true, "Hola", ["A", "B", "C", [1, 2, 3]]];
+console.log(e);
+console.log(g);
+console.log(g.length);
+console.log(g[2]);
+console.log(g[0]);
+console.log(g[3]);
+console.log(g[3][2]);
+console.log(g[3][3][0]);
+
+const h = Array.of("X", "Y", "Z", 9, 8, 7);
+console.log(h);
+
+const i = Array(100).fill(false);
+console.log(i);
+
+//Inicializar un nuevo array desde el constructor con el operador new [DEPRECATED]
+const j = new Array();
+console.log(j);
+
+const k = new Array(1, 2, 3, true, false);
+console.log(k);
+
+//array Methods
+
+const colores = ["Rojo", "Verde", "Azul"];
+console.log(colores);
+
+//.push añade un elemento a la array
+colores.push("Negro");
+console.log(colores);
+
+//.pop quita el último elemento
+colores.pop();
+console.log(colores);
+
+//.forEach ejecuta una función determinada por cada elemento en la array, y en orden, para poder iterar correctamente dichos elementos.
+
+colores.forEach(function (el, index) {
+  console.log(`<li id="${index}> ${el}</li>`);
+});
