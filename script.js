@@ -299,6 +299,35 @@ colores.forEach(function (el, index) {
   console.log(`<li id="${index}> ${el}</li>`);
 });
 
+// // // // //
+
+const resultado = sumar(2, 3, 102, 123, 11111111, 1, "xD");
+console.log(resultado);
+
+const carniceria = ["Bife", "Chorizos", "Vacio", "Mollejas"];
+const verduleria = ["Papas", "Batatas", "Sandias", "Zanahorias"];
+
+const recorrerArray = function (arreglo) {
+  for (let i = 0; i < arreglo.length; i++) {
+    console.log(arreglo[i]);
+  }
+};
+recorrerArray(carniceria);
+recorrerArray(verduleria);
+
+const carnes = carniceria.forEach(function (producto, index) {
+  console.log(`stock de ${producto} disponible`);
+});
+console.warn(carnes);
+const recorrerArrayPRO = function (arreglo) {
+  arreglo.forEach(function (producto) {
+    console.log(producto);
+  });
+};
+
+recorrerArrayPRO(verduleria);
+recorrerArrayPRO(carniceria);
+
 //Objects
 //'Todo es un objeto' - jonMirCha
 //____________________________________
@@ -529,7 +558,6 @@ do {
 for (let index = 0; index < 10; index++) {
   console.log("for " + index);
 }
-console.clear();
 const numeros = [10, 20, 30, 40, 50, 60, 70, 80, 90];
 for (let index = 0; index < numeros.length; index++) {
   console.log(numeros[index]);
@@ -549,16 +577,145 @@ for (const propiedad in jon) {
 
 //for of, recorre todos los elementos de cualquier objeto que sea iterable en javaScript.
 
-for(const elemento of numeros){
-  console.log(elemento)
-
+for (const elemento of numeros) {
+  console.log(elemento);
 }
 
 let cadena = "Viva la libertad, carajo";
 
-for(const caracter of cadena){
-  console.log(caracter)
+for (const caracter of cadena) {
+  console.log(caracter);
 }
 
+//Manejo de Errores try-catch-finally
 
+try {
+  console.log("En el Try se agrega el código a evaluar");
+  noExiste;
+  console.log("Segundo mensaje en el try");
+} catch (error) {
+  console.log("Catch, captura cualquier error surgido o lanzado en el try");
+  console.log(error);
+} finally {
+  console.log(
+    "El bloque finally se ejecutará siempre al final de un bloque try-catch"
+  );
+}
+
+try {
+  let numero = "MCXXIDCD";
+  if (isNaN(numero)) {
+    throw new Error("El caractér introducido no es un Número");
+  }
+  console.log(numero * numero);
+} catch (error) {
+  console.log(`Se produjo el siguiente error: ${error}`);
+}
+
+//break & continue
+
+const numerosA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+for (let i = 0; i < numerosA.length; i++) {
+  if (i === 5) {
+    break;
+  }
+  console.log(numerosA[i]);
+}
+
+for (let i = 0; i < numerosA.length; i++) {
+  if (i === 5) {
+    continue;
+  }
+  console.log(numerosA[i]);
+}
+
+//destructuring
+
+//sin destructuración
+const numerosB = [1, 2, 3];
+let uno = numerosB[0];
+dos = numerosB[1];
+tres = numerosB[2];
+
+console.log(uno, dos, tres);
+
+//con destructuración
+
+const [one, two, three] = numerosB;
+console.log(one, two, three);
+
+const persona = {
+  nombreA: "Javier Gerardo",
+  apellidoA: "Milei",
+  edadA: 53,
+};
+
+let { nombreA, apellidoA, edadA } = persona;
+console.log(persona);
+
+//Objetos literales
+let nombreB = "Bonnie";
+edadB = 7;
+
+const perro = {
+  nombreB: nombreB,
+  edadB: edadB,
+  ladrar: function () {
+    console.log("awa awa!!");
+  },
+};
+console.log(perro);
+perro.ladrar();
+
+const dog = {
+  nombreB,
+  edadB,
+  raza: "Caniche",
+  ladrar() {
+    console.log("guau guau!!");
+  },
+};
+console.log(dog);
+dog.ladrar();
+
+// Parámetros REST & Operador Spread
+
+//Rest Operator: Es para transformar un parámetro en una [Array], y de esa forma, iterarlo.
+function sumar(a, b, ...c) {
+  let resultante = a + b;
+  c.forEach(function (numero) {
+    resultante += numero;
+  });
+  return resultante;
+}
+
+//Spread Operator: Para concatenar (pegar) [Arrays].
+const resultado1 = sumar(5, 6, 4, 7);
+console.log(resultado1);
+
+const arr1 = [1, 2, 3, 4, 5],
+  arr2 = [6, 7, 8, 9, 0];
+
+console.log(arr1, arr2);
+const arr3 = [...arr1, ...arr2];
+console.log(arr3);
+
+console.clear();
+
+//Arrow Functions
+
+const saludoA = (nombreC) => console.log(`Hola ${nombreC}`);
+
+saludoA("Irma");
+
+const sumarA = (a, b, ...c) => {
+  let plus = a + b;
+  c.forEach((valor) => {
+    plus += valor;
+  });
+  return plus;
+};
+
+const resultanteFinal = sumarA(5, 3, 23, 2);
+console.log(resultanteFinal);
 
