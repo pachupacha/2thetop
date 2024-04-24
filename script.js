@@ -848,8 +848,7 @@ snoopy3.sonar();
 snoopy3.saludar();
 snoopy3.ladrar();
 
-
-//Clases y Herencias
+//Clases y Herencias, Métodos Estáticos, getters y setters
 
 class Animal3 {
 	constructor(nombre, genero) {
@@ -858,7 +857,7 @@ class Animal3 {
 	}
 	//Métodos
 	sonar() {
-		console.log(`Soy ${this.nombre} y hago ruiditos porque estoy vivo`);
+		console.log(`Soy ${this.nombre} y hago ruiditos porque estoy con vida`);
 	}
 	saludar() {
 		console.log(`Hola, me llamo ${this.nombre} y soy ${this.genero}`);
@@ -869,19 +868,32 @@ class Perro2 extends Animal3 {
 		//con el método super() se manda a llamar el constructor de la clase padre
 		super(nombre, genero);
 		this.tamanio = tamanio;
+		this.raza = null;
 	}
-	
-	sonar(){
-		console.log("Soy un perro y ladraré")
+
+	sonar() {
+		console.log("Soy un perro y ladraré");
 	}
-	
-	ladrar(){
+
+	ladrar() {
 		console.log("Guau Guau!!");
+	}
+	//Método estático: Se pueden utilizar sin necesidad de instanciar la clase, es decir, llamando al constructor `Perro2` directamente:
+	static queEres() {
+		console.log("Los perros somos los mejores amigos del hombre");
+	}
+	//Los setters y getters son métodos especiales que nos permiten establecer y obtener los valores de atributos de nuestra clase.
+	get getRaza() {
+		return this.raza;
+	}
+
+	set setRaza(raza) {
+		this.raza = raza;
 	}
 }
 
 const minnie = new Animal3("Minnie", "Hembra"),
-scooby = new Perro2 ("Scooby", "Macho", "Gigante");
+	scooby = new Perro2("Scooby", "Macho", "Gigante");
 
 console.log(minnie);
 console.log(scooby);
@@ -889,6 +901,227 @@ minnie.saludar();
 minnie.sonar();
 scooby.saludar();
 scooby.sonar();
-scooby.ladrar()
+scooby.ladrar();
+Perro2.queEres();
+scooby.setRaza = "Gran Danés";
+console.log(scooby.getRaza);
+
+console.log(console);
+console.error("Esto es un error");
+console.warn("Esto es un aviso");
+console.info("Esto es un mensaje informativo");
+console.log("Un registro de lo que ha pasado en nuestra aplicación");
+
+let nombreC = "Jon";
+apellidoC = "MirCha";
+edadC = 35;
+
+console.log(nombreC);
+console.log(apellidoC);
+console.log(edadC);
+console.log(nombre, apellido, edad);
+console.log(
+	`Hola mi noimbre es ${nombreC} ${apellidoC} y tengo ${edadC} años.`
+);
+
+console.log(
+	`Hola mi nombre es %s %s y tengo %d años.`,
+	nombreC,
+	apellidoC,
+	edadC
+);
+console.log(window);
+console.log(document);
+console.log(console);
+console.dir(window);
+console.dir(document);
+console.dir(console);
+console.group("Cursos de @jonmircha en YouTube");
+console.log("Curso de JavaScript");
+console.log("Curso de Node.js");
+console.log("Curso de PWAs");
+console.log("Curso de Flexbox");
+console.log("Curso de Diseño y Programación Web");
+console.groupEnd();
+console.table(Object.entries(console).sort());
+
+const numerosD = [1, 2, 3, 4, 5],
+	vocales = ["A", "E", "I", "O", "U"];
+
+console.table(numerosD);
+console.table(vocales);
+
+const perroB = {
+	nombre: "Bonnie",
+	raza: "Caniche",
+	colos: "Blanco",
+};
+
+console.table(perroB);
+
+console.time(`¿Cuanto tiempo tarda mi código?`);
+const arreglo = Array(1000000);
+
+for (let i = 0; i < arreglo.length; i++) {
+	arreglo[i] = i;
+}
+
+console.timeEnd(`¿Cuanto tiempo tarda mi código?`);
+
+for (let i = 0; i <= 100; i++) {
+	console.count("código for");
+	console.log(i);
+}
+
+let x = 12;
+y = 2;
+pruebaXY = "Se espera que X siempre sea menor que Y";
+
+console.assert(x < y, (x, y, pruebaXY));
+
+//Objeto Date
+
+console.log(Date());
+
+let fecha = new Date();
+console.log(fecha);
+
+//Día del mes
+console.log(fecha.getDate());
+//día de la semana D L M X J V S -> 0 1 2 3 4 5 6
+console.log(fecha.getDay());
+//Mes Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic -> 0 1 2 3 4 5 6 7 8 9 10 11
+console.log(fecha.getMonth());
+console.log(fecha.getFullYear());
+console.log(fecha.getHours());
+console.log(fecha.getMinutes());
+console.log(fecha.getSeconds());
+console.log(fecha.getMilliseconds());
+console.log(fecha.toString());
+console.log(fecha.toDateString());
+console.log(fecha.toLocaleString());
+console.log(fecha.toLocaleDateString());
+console.log(fecha.toLocaleTimeString());
+console.log(fecha.getTimezoneOffset());
+console.log(fecha.getUTCDate());
+console.log(fecha.getUTCHours());
+console.log(Date.now());
+let cumpleJon = new Date(1984, 4, 23);
+console.log(cumpleJon);
+
+//Objeto Math
+
+console.log(Math);
+console.log(Math.PI);
+console.log(Math.abs(-7.5));
+console.log(Math.ceil(7.2));
+console.log(Math.floor(7.8));
+console.log(Math.round(7.49));
+console.log(Math.sqrt(81));
+console.log(Math.pow(2, 5));
+console.log(Math.sign(-0.3));
+console.log(Math.random());
+console.log(Math.round(Math.random() * 1000));
+
+//Operadores de Cortocircuito
+
+//Cortocircuito OR || - cuando el valor de la izquierda en la expresión siempre pueda validar a true, es el valor que se cargará por defecto.
+
+//Cortocircuito AND && - cuando el valor de la izquierda en la expresión siempre pueda validar a false, es el valor que se cargará por defecto
+
+function saludar(nombre) {
+	nombre = nombre || "Desconocido";
+	console.log(`Hola ${nombre}`);
+}
+
+saludar("Pachu");
+saludar();
+
+console.log("cadena" || "Valor de la derecha");
+console.log(19 || "Valor de la derecha");
+console.log(true || "Valor de la derecha");
+console.log([] || "Valor de la derecha");
+console.log({} || "Valor de la derecha");
+console.log(-2 || "Valor de la derecha");
+console.log(false || "Valor de la derecha");
+console.log(null || "Valor de la derecha");
+console.log(undefined || "Valor de la derecha");
+console.log("" || "Valor de la derecha");
+console.log(0 || "Valor de la derecha");
+
+console.log(false && "Valor de la derecha");
+console.log(null && "Valor de la derecha");
+console.log(undefined && "Valor de la derecha");
+console.log("" && "Valor de la derecha");
+console.log(0 && "Valor de la derecha");
+
+// alert, confirm y prompt
+
+// alert("Esto es una Alerta");
+// confirm("Esto es una caja de confirmación");
+// prompt("Hola esto es un aviso, y le permite al usuario ingresar un valor");
+
+// let alerta = alert("Hola esto es una alerta"),
+// confirmacion = confirm("Hola esto es una confirmación"),
+// aviso = prompt(
+// 	"Hola esto es un aviso, y le permite al usuario ingresar un valor"
+// );
+
+// console.log(alerta);
+// console.log(confirmacion);
+// console.log(aviso);
+
+//Expresiones Regulares
+
+//Son una secuencia de caracteres que forma un patrón de búsqueda, proncipalmente utilizada para el rastreo de patrones de cadenas de caracteres.
+
+let cadenaA =
+	"Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem fuga cupiditate dolores saepe, preaesentium sit eaque recusandae id sapiente similique, laudantium voluptatum perferendis ea iure ad odio doloremque earum voluptate.";
+
+// let expReg = new RegExp ("lorem", "ig")
+// console.log(expReg.test(cadenaA))
+// console.log(expReg.exec(cadenaA))
+
+let expReg2 = /lorem/gi;
+console.log(expReg2.test(cadenaA));
+console.log(expReg2.exec(cadenaA));
 
 console.clear();
+
+//Funciones Anónimas Autoejecutables
+
+(function () {
+	console.log("Mi primer IIFE");
+})();
+
+(function (d, w, c) {
+	console.log("Mi segunda IIFE");
+	console.log(d);
+	console.log(w);
+	c.log("Este es un console.log");
+})(document, window, console);
+
+//Formas de escribir las funciones Anónimas Autoejecutables
+//Clásica
+(function () {
+	console.log(`Versión Clásica`);
+})();
+
+//La "Crockford" (JavaScript The Good Parts)
+((function (){
+	console.log(`Versión Crockford`)
+})());
+
+//Unaria
++function (){
+	console.log(`Versión Unaria`)
+}();
+
+//Facebook
+!function (){
+	console.log(`Versión Facebook`)
+}();
+
+//Módulos ( import / export )
+
+
