@@ -1086,8 +1086,6 @@ let expReg2 = /lorem/gi;
 console.log(expReg2.test(cadenaA));
 console.log(expReg2.exec(cadenaA));
 
-console.clear();
-
 //Funciones Anónimas Autoejecutables
 
 (function () {
@@ -1108,20 +1106,19 @@ console.clear();
 })();
 
 //La "Crockford" (JavaScript The Good Parts)
-((function (){
-	console.log(`Versión Crockford`)
-})());
+(function () {
+	console.log(`Versión Crockford`);
+})();
 
 //Unaria
-+function (){
-	console.log(`Versión Unaria`)
-}();
++(function () {
+	console.log(`Versión Unaria`);
+})();
 
 //Facebook
-!function (){
-	console.log(`Versión Facebook`)
-}();
+!(function () {
+	console.log(`Versión Facebook`);
+})();
 
-//Módulos ( import / export )
-
+console.clear();
 
