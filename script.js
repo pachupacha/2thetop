@@ -1,26 +1,113 @@
-// import { consolidation1 } from "./exercises/jmircha/consolidationSheets/consolidation1.js";
-// import { consolidation2 } from "./exercises/jmircha/consolidationSheets/consolidation2.js";
-// import { consolidation3 } from "./exercises/jmircha/consolidationSheets/consolidation3.js";
-// import { consolidation4 } from "./scripts/consolidationSheets/consolidation4.js";
-// import { consolidation5 } from "./scripts/consolidationSheets/consolidation5.js";
-// import { characterCount } from "./exercises/jmircha/ex1.js";
-// import { cutText } from "./exercises/jmircha/ex2.js";
-// import { separateText } from "./exercises/jmircha/ex3.js";
-// console.log(separateText("Tristeza nao tem fim.", " "));
-// console.log(characterCount("A big procedure context"));
-// console.log(cutText("Hello man", 4));
-// console.log(consolidation1("Siamo Fuori", -5));
-// console.log(consolidation2("Siamo Fuori", 0));
-// console.log(consolidation3("Puo essere pepe", 15));
-// import { repeatText } from "./exercises/jmircha/ex4.js";
-// console.log(repeatText("Hola Chavales", 5));
-// import { reverseText } from "./exercises/jmircha/ex5.js";
-// console.log(reverseText("Hola Hermano."));
+import { INVALID_GENRES_MESSAGE, VALID_GENRES } from './scripts/scratch/textConstants.js'
 
-import { howMuchRepeats } from './exercises/jmircha/ex6.js'
-console.log(
-  howMuchRepeats(
-    'la verdad que esta poronga me costo mucho, la puta madre que lo remil pario, esta poronga de remil mierda puta, unas ganas de pegarme un tiro con los for y los bucles del orto pero lastimosamente si no los aprendo se me caga todo el proceso, asi que la unica manera de volverme poderoso es haciendo esta mi mejor arma asi me la meto en el orto mierda mierda mierda mierda',
-    'mierda',
-  ),
-)
+class Movie {
+  constructor({ imdbId, title, director, premiereYear, originMovie, genres, imdbRating }) {
+    this.imdbId = imdbId
+    this.title = title
+    this.director = director
+    this.premiereYear = premiereYear
+    this.originMovie = originMovie
+    this.genres = genres
+    this.imdbRating = imdbRating
+
+    this.imdbIdValidation()
+    this.titleValidation()
+    this.directorValidation()
+    this.premiereYearValidation()
+    this.originMovieValidation()
+    this.genresValidation()
+    this.imdbRatingValidation()
+  }
+
+  imdbIdValidation() {
+    if (this.imdbId === null) throw new Error('Put a IMDb Id.')
+
+    if (!/^tt\d{7,}$/i.test(this.imdbId)) throw new Error('Invalid IMDb Id.')
+  }
+
+  titleValidation() {
+    if (this.title === null) throw new Error('Put a Movie Title.')
+
+    if (this.title.length > 100) throw new Error('Movie Title must have less than 100 characters.')
+  }
+
+  directorValidation() {
+    if (this.director === null) throw new Error('Put a Director Description.')
+
+    if (this.director.length > 50) throw new Error('Director Description must have less than 50 characters.')
+  }
+
+  premiereYearValidation() {
+    if (this.premiereYear === null) throw new Error('Put a Year.')
+
+    if (this.premiereYear < 1888) throw new Error('Invalid Year.')
+
+    if (this.premiereYear > new Date().getFullYear()) throw new Error('Invalid Year.')
+  }
+
+  originMovieValidation() {
+    if (this.originMovie === null) throw new Error('Put a Origin Country|Countries. ')
+
+    if (!Array.isArray(this.originMovie)) throw new Error('Invalid Origin Country|Countries Input.')
+  }
+
+  genresValidation() {
+    if (!Array.isArray(this.genres)) throw new Error('Invalid Genre|Genres Input.')
+
+    const normalizedGenres = this.genres.map((el) => el.trim().toLowerCase())
+
+    const validGenres = VALID_GENRES.map((el) => el.toLowerCase())
+
+    const allValid = normalizedGenres.every((el) => validGenres.includes(el))
+    if (!allValid) throw new Error(INVALID_GENRES_MESSAGE)
+
+    this.genres = normalizedGenres.map((el) => el.charAt(0).toUpperCase() + el.slice(1))
+  }
+
+  imdbRatingValidation() {
+    if (this.imdbRating <= 0 || this.imdbRating > 10) throw new Error('You must put a Valid IMDb Rating.')
+    this.imdbRating.toFixed(1)
+  }
+
+  technicalSheet() {
+    console.info(
+      `Tecnnical Sheet:\nTitle: ${this.title}\nDirector: ${this.director}\nPremiere Year: ${
+        this.premiereYear
+      }\nOrigin: ${this.originMovie.join(' / ')}\nGenre: ${this.genres.join('-')}\nCalification: ${
+        this.imdbRating
+      }\n\n(IMDb Identificator: ${this.imdbId})`,
+    )
+  }
+}
+
+const myMovies = [
+  {
+    imdbId: 'tt0071562',
+    title: 'The Godfather: Part II',
+    director: 'Francis Ford Coppola',
+    premiereYear: 1974,
+    originMovie: ['United States'],
+    genres: ['Crime', 'Drama'],
+    imdbRating: 9.0,
+  },
+  {
+    imdbId: 'tt0099685',
+    title: 'Goodfellas',
+    director: 'Martin Scorsese',
+    premiereYear: 1990,
+    originMovie: ['United States'],
+    genres: ['Crime', 'Drama'],
+    imdbRating: 8.7,
+  },
+  {
+    imdbId: 'tt0086250',
+    title: 'Scarface',
+    director: 'Brian De Palma',
+    premiereYear: 1983,
+    originMovie: ['United States'],
+    genres: ['Crime', 'Drama'],
+    imdbRating: 8.3,
+  },
+]
+
+myMovies.forEach((el) => new Movie(el).technicalSheet())

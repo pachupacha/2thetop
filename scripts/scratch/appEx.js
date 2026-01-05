@@ -1,122 +1,118 @@
 // ===============================
 //  DATA GLOBAL
 // ===============================
-const users = [];
-const tasks = [];
+const users = []
+const tasks = []
 
 const PRIORITIES = {
-  LOW: "LOW",
-  MEDIUM: "MEDIUM",
-  HIGH: "HIGH",
-};
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+}
 
-const VALID_PRIORITIES = Object.values(PRIORITIES);
+const VALID_PRIORITIES = Object.values(PRIORITIES)
 
 // ===============================
 //  HELPERS
 // ===============================
-const instanceCreation = () => new Date().toLocaleString();
+const instanceCreation = () => new Date().toLocaleString()
 
 // ===============================
 //  CLASES
 // ===============================
 class User {
   constructor(name, email) {
-    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/u.test(name))
-      throw new Error("Invalid name (letters and spaces only)");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      throw new Error("Invalid email format");
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/u.test(name)) throw new Error('Invalid name (letters and spaces only)')
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Invalid email format')
 
-    this.id = crypto.randomUUID();
-    this.name = name;
-    this.email = email;
-    this.accountSince = instanceCreation();
-    this.isActive = true;
-    this.tasks = []; // guarda IDs de Task
+    this.id = crypto.randomUUID()
+    this.name = name
+    this.email = email
+    this.accountSince = instanceCreation()
+    this.isActive = true
+    this.tasks = [] // guarda IDs de Task
   }
 
   addTaskId(taskId) {
     if (!this.tasks.includes(taskId)) {
-      this.tasks.push(taskId);
+      this.tasks.push(taskId)
     }
   }
 
   removeTaskId(taskId) {
-    this.tasks = this.tasks.filter((id) => id !== taskId);
+    this.tasks = this.tasks.filter((id) => id !== taskId)
   }
 
   userTasks() {
     if (this.tasks.length === 0) {
-      return `${this.name} has no tasks assigned.`;
+      return `${this.name} has no tasks assigned.`
     }
 
     const lines = this.tasks.map((taskId, index) => {
-      const task = tasks.find((t) => t.id === taskId);
+      const task = tasks.find((t) => t.id === taskId)
 
       if (!task) {
-        return `• [${index}] [MISSING TASK] id: ${taskId}`;
+        return `• [${index}] [MISSING TASK] id: ${taskId}`
       }
 
-      return `• [${index}] ${task.taskInfo()}`;
-    });
+      return `• [${index}] ${task.taskInfo()}`
+    })
 
-    return lines.join("\n");
+    return lines.join('\n')
   }
 }
 
 class Task {
   constructor(title, description, priority = PRIORITIES.MEDIUM) {
     if (!title || !title.trim()) {
-      throw new Error("Title is required");
+      throw new Error('Title is required')
     }
     if (!description || !description.trim()) {
-      throw new Error("Description is required");
+      throw new Error('Description is required')
     }
 
-    priority = priority.toUpperCase();
+    priority = priority.toUpperCase()
 
     if (!VALID_PRIORITIES.includes(priority)) {
       throw new Error(
-        `The priority should be established between:\n•${PRIORITIES.LOW}\n•${PRIORITIES.MEDIUM}\n•${PRIORITIES.HIGH}`
-      );
+        `The priority should be established between:\n•${PRIORITIES.LOW}\n•${PRIORITIES.MEDIUM}\n•${PRIORITIES.HIGH}`,
+      )
     }
 
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.description = description;
-    this.priority = priority;
-    this.creation = instanceCreation();
-    this.completed = false;
+    this.id = crypto.randomUUID()
+    this.title = title
+    this.description = description
+    this.priority = priority
+    this.creation = instanceCreation()
+    this.completed = false
   }
 
   vinculateTask(globalArray, user) {
-    const isTaskInArray = globalArray.find((task) => task.id === this.id);
-    const isTaskInUserArray = user.tasks.find((id) => id === this.id);
+    const isTaskInArray = globalArray.find((task) => task.id === this.id)
+    const isTaskInUserArray = user.tasks.find((id) => id === this.id)
 
-    !isTaskInArray && globalArray.push(this);
-    !isTaskInUserArray && user.addTaskId(this.id);
+    !isTaskInArray && globalArray.push(this)
+    !isTaskInUserArray && user.addTaskId(this.id)
   }
 
   completeTask() {
-    this.completed = true;
-    return this;
+    this.completed = true
+    return this
   }
 
   changePriority(input) {
-    const upper = input.toUpperCase();
+    const upper = input.toUpperCase()
     if (!VALID_PRIORITIES.includes(upper)) {
       throw new Error(
-        `The priority should be established between:\n•${PRIORITIES.LOW}\n•${PRIORITIES.MEDIUM}\n•${PRIORITIES.HIGH}`
-      );
+        `The priority should be established between:\n•${PRIORITIES.LOW}\n•${PRIORITIES.MEDIUM}\n•${PRIORITIES.HIGH}`,
+      )
     }
-    this.priority = upper;
-    return this;
+    this.priority = upper
+    return this
   }
 
   taskInfo() {
-    return `[${this.priority} - ${this.title} - ${this.description} - ${
-      this.completed ? "✔" : "⛔"
-    }]`;
+    return `[${this.priority} - ${this.title} - ${this.description} - ${this.completed ? '✔' : '⛔'}]`
   }
 }
 
@@ -126,20 +122,18 @@ class Task {
 function createUserWithPrompts() {
   while (true) {
     try {
-      const name = prompt("Enter user name:");
-      if (name === null) return null;
+      const name = prompt('Enter user name:')
+      if (name === null) return null
 
-      const email = prompt("Enter user email:");
-      if (email === null) return null;
+      const email = prompt('Enter user email:')
+      if (email === null) return null
 
-      const user = new User(name, email);
-      alert("User created successfully!");
-      return user;
+      const user = new User(name, email)
+      alert('User created successfully!')
+      return user
     } catch (err) {
-      const retry = confirm(
-        `Error creating user:\n${err.message}\n\nDo you want to try again?`
-      );
-      if (!retry) return null;
+      const retry = confirm(`Error creating user:\n${err.message}\n\nDo you want to try again?`)
+      if (!retry) return null
     }
   }
 }
@@ -151,66 +145,53 @@ function selectUserMenu() {
   while (true) {
     // Si no hay usuarios, ofrecer crear uno
     if (users.length === 0) {
-      const createFirst = confirm(
-        "No users exist yet.\nDo you want to create the first user?"
-      );
-      if (!createFirst) return null;
+      const createFirst = confirm('No users exist yet.\nDo you want to create the first user?')
+      if (!createFirst) return null
 
-      const newUser = createUserWithPrompts();
+      const newUser = createUserWithPrompts()
       if (!newUser) {
-        alert("No user created. Exiting.");
-        return null;
+        alert('No user created. Exiting.')
+        return null
       }
-      users.push(newUser);
-      return newUser;
+      users.push(newUser)
+      return newUser
     }
 
     // Si ya hay usuarios, menú de login / crear / salir
     const option = prompt(
-      "User panel:\n\n" +
-        "1) Login as existing user\n" +
-        "2) Create new user\n" +
-        "3) Exit application\n\n" +
-        "Enter 1-3:"
-    );
+      'User panel:\n\n' + '1) Login as existing user\n' + '2) Create new user\n' + '3) Exit application\n\n' + 'Enter 1-3:',
+    )
 
-    if (option === null) return null;
+    if (option === null) return null
 
     switch (option.trim()) {
-      case "1": {
-        const list = users
-          .map(
-            (u, idx) =>
-              `[${idx}] ${u.name} <${u.email}> (since ${u.accountSince})`
-          )
-          .join("\n");
+      case '1': {
+        const list = users.map((u, idx) => `[${idx}] ${u.name} <${u.email}> (since ${u.accountSince})`).join('\n')
 
-        const idxStr = prompt(
-          `Select user index to login:\n\n${list}\n\nEnter index (0,1,2...):`
-        );
-        if (idxStr === null) break;
+        const idxStr = prompt(`Select user index to login:\n\n${list}\n\nEnter index (0,1,2...):`)
+        if (idxStr === null) break
 
-        const idx = Number(idxStr);
+        const idx = Number(idxStr)
         if (Number.isNaN(idx) || idx < 0 || idx >= users.length) {
-          alert("Invalid index.");
-          break;
+          alert('Invalid index.')
+          break
         }
 
-        return users[idx];
+        return users[idx]
       }
-      case "2": {
-        const newUser = createUserWithPrompts();
+      case '2': {
+        const newUser = createUserWithPrompts()
         if (newUser) {
-          users.push(newUser);
-          return newUser;
+          users.push(newUser)
+          return newUser
         }
-        break;
+        break
       }
-      case "3":
-        return null;
+      case '3':
+        return null
       default:
-        alert("Invalid option. Please enter 1, 2, or 3.");
-        break;
+        alert('Invalid option. Please enter 1, 2, or 3.')
+        break
     }
   }
 }
@@ -221,27 +202,23 @@ function selectUserMenu() {
 function createTaskWithPrompts(currentUser) {
   while (true) {
     try {
-      const title = prompt("Task title:");
-      if (title === null) return;
+      const title = prompt('Task title:')
+      if (title === null) return
 
-      const description = prompt("Task description:");
-      if (description === null) return;
+      const description = prompt('Task description:')
+      if (description === null) return
 
-      const priority = prompt(
-        `Task priority:\nAllowed: ${VALID_PRIORITIES.join(", ")}`
-      );
-      if (priority === null) return;
+      const priority = prompt(`Task priority:\nAllowed: ${VALID_PRIORITIES.join(', ')}`)
+      if (priority === null) return
 
-      const task = new Task(title, description, priority);
-      task.vinculateTask(tasks, currentUser);
+      const task = new Task(title, description, priority)
+      task.vinculateTask(tasks, currentUser)
 
-      alert("Task created and linked to user!");
-      return;
+      alert('Task created and linked to user!')
+      return
     } catch (err) {
-      const retry = confirm(
-        `Error creating task:\n${err.message}\n\nDo you want to try again?`
-      );
-      if (!retry) return;
+      const retry = confirm(`Error creating task:\n${err.message}\n\nDo you want to try again?`)
+      if (!retry) return
     }
   }
 }
@@ -251,32 +228,30 @@ function createTaskWithPrompts(currentUser) {
 // ===============================
 function completeTaskForUser(currentUser) {
   if (currentUser.tasks.length === 0) {
-    alert("This user has no tasks.");
-    return;
+    alert('This user has no tasks.')
+    return
   }
 
-  const list = currentUser.userTasks();
-  const indexStr = prompt(
-    `Select the task index to COMPLETE:\n\n${list}\n\nEnter index (0,1,2...)`
-  );
-  if (indexStr === null) return;
+  const list = currentUser.userTasks()
+  const indexStr = prompt(`Select the task index to COMPLETE:\n\n${list}\n\nEnter index (0,1,2...)`)
+  if (indexStr === null) return
 
-  const index = Number(indexStr);
+  const index = Number(indexStr)
   if (Number.isNaN(index) || index < 0 || index >= currentUser.tasks.length) {
-    alert("Invalid index.");
-    return;
+    alert('Invalid index.')
+    return
   }
 
-  const taskId = currentUser.tasks[index];
-  const task = tasks.find((t) => t.id === taskId);
+  const taskId = currentUser.tasks[index]
+  const task = tasks.find((t) => t.id === taskId)
 
   if (!task) {
-    alert("Task not found (internal error).");
-    return;
+    alert('Task not found (internal error).')
+    return
   }
 
-  task.completeTask();
-  alert("Task marked as completed.");
+  task.completeTask()
+  alert('Task marked as completed.')
 }
 
 // ===============================
@@ -284,34 +259,30 @@ function completeTaskForUser(currentUser) {
 // ===============================
 function removeTaskFromUser(currentUser) {
   if (currentUser.tasks.length === 0) {
-    alert("This user has no tasks.");
-    return;
+    alert('This user has no tasks.')
+    return
   }
 
-  const list = currentUser.userTasks();
-  const indexStr = prompt(
-    `Select the task index to REMOVE from this user:\n\n${list}\n\nEnter index (0,1,2...)`
-  );
-  if (indexStr === null) return;
+  const list = currentUser.userTasks()
+  const indexStr = prompt(`Select the task index to REMOVE from this user:\n\n${list}\n\nEnter index (0,1,2...)`)
+  if (indexStr === null) return
 
-  const index = Number(indexStr);
+  const index = Number(indexStr)
   if (Number.isNaN(index) || index < 0 || index >= currentUser.tasks.length) {
-    alert("Invalid index.");
-    return;
+    alert('Invalid index.')
+    return
   }
 
-  const taskId = currentUser.tasks[index];
-  currentUser.removeTaskId(taskId);
+  const taskId = currentUser.tasks[index]
+  currentUser.removeTaskId(taskId)
 
-  const removeGlobal = confirm(
-    "Do you also want to remove this task from the global task list?"
-  );
+  const removeGlobal = confirm('Do you also want to remove this task from the global task list?')
   if (removeGlobal) {
-    const idx = tasks.findIndex((t) => t.id === taskId);
-    if (idx !== -1) tasks.splice(idx, 1);
+    const idx = tasks.findIndex((t) => t.id === taskId)
+    if (idx !== -1) tasks.splice(idx, 1)
   }
 
-  alert("Task removed from user.");
+  alert('Task removed from user.')
 }
 
 // ===============================
@@ -319,11 +290,11 @@ function removeTaskFromUser(currentUser) {
 // ===============================
 function mainMenu(currentUser) {
   if (!currentUser) {
-    alert("No user logged in. Exiting.");
-    return "exit";
+    alert('No user logged in. Exiting.')
+    return 'exit'
   }
 
-  let exit = false;
+  let exit = false
 
   while (!exit) {
     const option = prompt(
@@ -335,33 +306,33 @@ function mainMenu(currentUser) {
         `4) Remove a task\n` +
         `5) Exit application\n` +
         `6) Log out (switch user)\n\n` +
-        `Enter 1-6:`
-    );
+        `Enter 1-6:`,
+    )
 
-    if (option === null) return "exit";
+    if (option === null) return 'exit'
 
     switch (option.trim()) {
-      case "1":
-        alert(currentUser.userTasks());
-        break;
-      case "2":
-        createTaskWithPrompts(currentUser);
-        break;
-      case "3":
-        completeTaskForUser(currentUser);
-        break;
-      case "4":
-        removeTaskFromUser(currentUser);
-        break;
-      case "5":
-        alert("Goodbye!");
-        return "exit";
-      case "6":
-        alert("Logging out...");
-        return "logout";
+      case '1':
+        alert(currentUser.userTasks())
+        break
+      case '2':
+        createTaskWithPrompts(currentUser)
+        break
+      case '3':
+        completeTaskForUser(currentUser)
+        break
+      case '4':
+        removeTaskFromUser(currentUser)
+        break
+      case '5':
+        alert('Goodbye!')
+        return 'exit'
+      case '6':
+        alert('Logging out...')
+        return 'logout'
       default:
-        alert("Invalid option. Please enter a number between 1 and 6.");
-        break;
+        alert('Invalid option. Please enter a number between 1 and 6.')
+        break
     }
   }
 }
@@ -370,28 +341,26 @@ function mainMenu(currentUser) {
 //  LOOP GENERAL DE LA APP
 // ===============================
 function runApp() {
-  let running = true;
+  let running = true
 
   while (running) {
-    const currentUser = selectUserMenu();
+    const currentUser = selectUserMenu()
     if (!currentUser) {
-      alert("Exiting application.");
-      return;
+      alert('Exiting application.')
+      return
     }
 
-    const action = mainMenu(currentUser);
+    const action = mainMenu(currentUser)
 
-    if (action === "exit") {
-      running = false;
-      alert("Application closed.");
+    if (action === 'exit') {
+      running = false
+      alert('Application closed.')
     }
     // si action === "logout", vuelve al while y te deja elegir otro usuario
   }
 }
 
-
-
 // ===============================
 //  ARRANQUE
 // ===============================
-runApp();
+runApp()
